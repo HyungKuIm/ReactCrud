@@ -65,6 +65,56 @@ public class PeopleController : ControllerBase
             // 500 Internal Server Error status code + exception message in response body
         }
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdatePerson(int id, [FromBody] Person person)
+    {
+        try
+        {
+            if (id != person.Id)
+            {
+                return BadRequest("ID in URL does not match ID in request body."); // 400 Bad Request status code + error message in response body
+            }
+
+            if (!await _context.People.AnyAsync(p => p.Id == id))
+            {
+                return NotFound(); // 404 Not Found status code
+            }
+
+
+            _context.People.Update(person);
+            await _context.SaveChangesAsync();
+            return NoContent(); // 204 No Content status code
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            // 500 Internal Server Error status code + exception message in response body
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeletePerson(int id)
+    {
+        try
+        {
+            
+            var person = await _context.People.FindAsync(id);
+            if (person is null)
+            {
+                return NotFound(); // 404 Not Found status code
+            }
+
+            _context.People.Remove(person);
+            await _context.SaveChangesAsync();
+            return NoContent(); // 204 No Content status code
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            // 500 Internal Server Error status code + exception message in response body
+        }
+    }
     
 }
 

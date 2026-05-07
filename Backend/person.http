@@ -4,8 +4,8 @@ POST {{base_address}}
 Content-Type: application/json
 
 {
-    "firstName": "재",
-    "lastName": "허"
+    "firstName": "이",
+    "lastName": "창호"
 }
 
 
@@ -13,4 +13,17 @@ Content-Type: application/json
 GET {{base_address}}
 
 ###
-GET {{base_address}}/1
+GET {{base_address}}/15
+
+###
+PUT {{base_address}}/15
+Content-Type: application/json
+
+{
+    "id": 15,
+    "firstName": "창호2",
+    "lastName": "최"
+}
+
+###
+DELETE {{base_address}}/15
